@@ -142,7 +142,7 @@ SERVICE_NAME="teslaminer"
 INSTALL_DIR="/opt/teslaminer"
 BIN_NAME="teslaminerkernel"
 SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
-DOWNLOAD_URL="https://github.com/hivecassiny/tesla/releases/download/${VERSION}/teslalinuxamd64.tar.gz"
+DOWNLOAD_URL="https://github.com/hivecassiny/tesla/releases/download/${VERSION}/teslaminerkernellinuxamd64.tar.gz"
 TEMP_DIR="/tmp/teslaminer_install"
 
 # 检查是否root用户
@@ -202,7 +202,7 @@ set_socket_limit() {
 download_and_extract() {
     echo -e "${YELLOW}$(text downloading)${NC}"
     mkdir -p "$TEMP_DIR"
-    wget -q "$DOWNLOAD_URL" -O "$TEMP_DIR/teslaminer.tar.gz"
+    wget "$DOWNLOAD_URL" -O "$TEMP_DIR/teslaminer.tar.gz"
     if [ $? -ne 0 ]; then
         echo -e "${RED}$(text download_fail)${NC}"
         exit 1
@@ -211,16 +211,7 @@ download_and_extract() {
     echo -e "${YELLOW}$(text extracting)${NC}"
     tar -xzf "$TEMP_DIR/teslaminer.tar.gz" -C "$TEMP_DIR"
     
-    # 查找内部压缩包和解压
-    inner_tar=$(find "$TEMP_DIR" -name "teslaminerkernellinux.tar.gz")
-    if [ -z "$inner_tar" ]; then
-        echo -e "${RED}$(text error_inner_tar)${NC}"
-        exit 1
-    fi
-    
-    tar -xzf "$inner_tar" -C "$TEMP_DIR"
-    
-    # 查找二进制文件
+    # 直接查找二进制文件
     BIN_PATH=$(find "$TEMP_DIR" -name "$BIN_NAME" -type f)
     if [ -z "$BIN_PATH" ]; then
         echo -e "${RED}$(text error_bin "$BIN_NAME")${NC}"
@@ -258,7 +249,7 @@ User=root
 WorkingDirectory=$INSTALL_DIR
 ExecStart=$INSTALL_DIR/$BIN_NAME
 Restart=always
-RestartSec=5s
+RestartSec=3s
 LimitNOFILE=1048576
 
 [Install]
