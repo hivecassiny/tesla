@@ -5,14 +5,14 @@
       "os_arch": "amd64",
       "name": "tesla",
       "version": "v0.1.006@250806",
-      "download_url": "https://github.com/hivecassiny/tesla/archive/refs/tags/v0.1.006@250806/teslalinuxamd64.tar.gz"
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.006@250806/teslalinuxamd64.tar.gz"
     },
     {
       "os_type": "windows",
       "os_arch": "amd64",
       "name": "tesla.exe",
       "version": "v0.1.006@250806",
-      "download_url": "https://github.com/hivecassiny/tesla/archive/refs/tags/v0.1.006@250806/teslawindowsamd64.zip"
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.006@250806/teslawindowsamd64.zip"
     }
   ]
 }
