@@ -6,19 +6,26 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
+ScriptVersion='v1.0.1'
 
-# 默认语言设置为中文
+# 默认语言设置为英文
 LANG="en"
+VERSION=""
 
-# 检查语言参数
-if [ "$1" = "lang=en" ]; then
-    LANG="en"
-elif [ "$1" = "lang=zh" ]; then
-    LANG="zh"
+# 解析参数
+for arg in "$@"; do
+    if [[ "$arg" == lang=* ]]; then
+        LANG="${arg#*=}"
+    elif [[ "$arg" == ver=* ]]; then
+        VERSION="${arg#*=}"
+    fi
+done
+
+# 检查版本号是否提供
+if [ -z "$VERSION" ]; then
+    echo -e "${RED}Error: Version number is required (e.g. ver=v0.1.007@250806)${NC}"
+    exit 1
 fi
-
-# 获取版本号
-VERSION=$2
 
 # 多语言文本定义 - 按语言分组
 declare -A TEXTS
@@ -334,6 +341,7 @@ show_menu() {
     clear
     echo -e "${GREEN}================================${NC}"
     echo -e "${GREEN}  $(text menu_title) ${NC}"
+    echo -e "${GREEN}  ${ScriptVersion}${NC}"
     echo -e "${GREEN}================================${NC}"
     echo -e "1. $(text menu_install)"
     echo -e "2. $(text menu_start)"
