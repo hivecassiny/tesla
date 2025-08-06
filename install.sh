@@ -6,11 +6,13 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
-ScriptVersion='v1.2.0'
+ScriptVersion='v1.3.0'
 
 # Default language set to English
 LANG="en"
 VERSION=""
+HIVE_MINER_HOST=""
+UUID=""
 
 # Parse arguments
 for arg in "$@"; do
@@ -18,12 +20,23 @@ for arg in "$@"; do
         LANG="${arg#*=}"
     elif [[ "$arg" == ver=* ]]; then
         VERSION="${arg#*=}"
+    elif [[ "$arg" == hive_miner_host=* ]]; then
+        HIVE_MINER_HOST="${arg#*=}"
+    elif [[ "$arg" == uuid=* ]]; then
+        UUID="${arg#*=}"
     fi
 done
 
 # Check if version number is provided
 if [ -z "$VERSION" ]; then
     echo -e "${RED}Error: Version number is required (e.g. ver=v0.1.007@250806)${NC}"
+    exit 1
+fi
+
+# Check if required parameters are provided
+if [ -z "$HIVE_MINER_HOST" ] || [ -z "$UUID" ]; then
+    echo -e "${RED}Error: Both hive_miner_host and uuid parameters are required${NC}"
+    echo -e "${YELLOW}Example: lang=en ver=v0.1.007@250806 hive_miner_host=192.168.1.41:18383 uuid=605916129097027584${NC}"
     exit 1
 fi
 
@@ -89,6 +102,10 @@ TEXTS+=(
     ["rebooting_en"]="Rebooting server now..."
     ["confirm_reboot_en"]="Are you sure you want to reboot the server? (y/n) "
     ["reboot_canceled_en"]="Reboot canceled."
+    
+    # Config related
+    ["creating_config_en"]="Creating config.rig file..."
+    ["config_created_en"]="config.rig file created successfully!"
 )
 
 # Chinese texts
@@ -150,6 +167,10 @@ TEXTS+=(
     ["rebooting_zh"]="正在重启服务器..."
     ["confirm_reboot_zh"]="确定要重启服务器吗? (y/n) "
     ["reboot_canceled_zh"]="已取消重启。"
+    
+    # Config related
+    ["creating_config_zh"]="正在创建config.rig文件..."
+    ["config_created_zh"]="config.rig文件创建成功!"
 )
 
 # Get localized text
@@ -172,6 +193,18 @@ BIN_NAME="teslaminerkernel"
 SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
 DOWNLOAD_URL="https://github.com/hivecassiny/tesla/releases/download/${VERSION}/teslaminerkernellinuxamd64.tar.gz"
 TEMP_DIR="/tmp/teslaminer_install"
+CONFIG_FILE="${INSTALL_DIR}/config.rig"
+
+# Create config file
+create_config() {
+    echo -e "${YELLOW}$(text creating_config)${NC}"
+    cat > "$CONFIG_FILE" <<EOF
+hive_miner_host=${HIVE_MINER_HOST}
+#uuid must not be modified - changing it will prevent server connection
+uuid=${UUID}
+EOF
+    echo -e "${GREEN}$(text config_created)${NC}"
+}
 
 # Check if running as root
 check_root() {
@@ -250,7 +283,6 @@ download_and_extract() {
 }
 
 # Install service
-# Install service
 install_service() {
     if is_installed; then
         echo -e "${RED}$(text already_installed)${NC}"
@@ -265,6 +297,9 @@ install_service() {
     
     # Move files to installation directory
     cp "$BIN_PATH" "$INSTALL_DIR/"
+    
+    # Create config file
+    create_config
     
     # Create service file
     cat > "$SERVICE_FILE" <<EOF
@@ -406,6 +441,11 @@ update_service() {
     
     # Copy new binary
     cp "$BIN_PATH" "$INSTALL_DIR/"
+    
+    # Recreate config file (preserve existing settings)
+    if [ ! -f "$CONFIG_FILE" ]; then
+        create_config
+    fi
     
     # Start service
     systemctl start "$SERVICE_NAME"
