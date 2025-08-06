@@ -1,18 +1,18 @@
 #!/bin/bash
 
-# 颜色定义
+# Color definitions
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
-ScriptVersion='v1.0.1'
+ScriptVersion='v1.1.0'
 
-# 默认语言设置为英文
+# Default language set to English
 LANG="en"
 VERSION=""
 
-# 解析参数
+# Parse arguments
 for arg in "$@"; do
     if [[ "$arg" == lang=* ]]; then
         LANG="${arg#*=}"
@@ -21,34 +21,37 @@ for arg in "$@"; do
     fi
 done
 
-# 检查版本号是否提供
+# Check if version number is provided
 if [ -z "$VERSION" ]; then
     echo -e "${RED}Error: Version number is required (e.g. ver=v0.1.007@250806)${NC}"
     exit 1
 fi
 
-# 多语言文本定义 - 按语言分组
+# Multilingual text definitions - grouped by language
 declare -A TEXTS
 
-# 英文文本
+# English texts
 TEXTS+=(
-    # 公共文本
+    # Common texts
     ["error_root_en"]="Error: This script must be run as root!"
     ["menu_title_en"]="Teslaminer Service Management Script"
     ["press_any_key_en"]="Press any key to continue..."
     ["invalid_option_en"]="Invalid option, please try again!"
     ["exit_en"]="Exiting script."
+    ["input_option_en"]="Please enter your choice"
     
-    # 菜单选项
+    # Menu options
     ["menu_install_en"]="Install TeslaMiner service"
     ["menu_start_en"]="Start TeslaMiner service"
     ["menu_stop_en"]="Stop TeslaMiner service"
     ["menu_restart_en"]="Restart TeslaMiner service"
     ["menu_status_en"]="View service status"
     ["menu_uninstall_en"]="Uninstall TeslaMiner service"
+    ["menu_update_en"]="Update TeslaMiner"
+    ["menu_reboot_en"]="Reboot server"
     ["menu_exit_en"]="Exit"
     
-    # 安装相关
+    # Installation related
     ["socket_limit_en"]="Setting system socket connection limit..."
     ["socket_set_en"]="System socket connection limit set to 1048576"
     ["socket_ok_en"]="Socket connection limit is already high enough (current: %s)"
@@ -64,38 +67,52 @@ TEXTS+=(
     ["already_installed_en"]="Error: TeslaMiner service is already installed!"
     ["uninstall_first_en"]="Please uninstall first or use restart/stop functions"
     
-    # 卸载相关
+    # Uninstallation related
     ["uninstalling_en"]="Uninstalling TeslaMiner service..."
     ["uninstalled_en"]="TeslaMiner service uninstalled!"
     ["not_installed_en"]="Error: TeslaMiner service is not installed, nothing to uninstall!"
     
-    # 服务控制
+    # Service control
     ["starting_en"]="Service started!"
     ["already_running_en"]="Service is already running!"
     ["stopping_en"]="Service stopped!"
     ["already_stopped_en"]="Service is already stopped!"
     ["restarting_en"]="Service restarted!"
+    
+    # Update related
+    ["updating_en"]="Updating TeslaMiner..."
+    ["update_done_en"]="TeslaMiner updated successfully!"
+    ["update_fail_en"]="Update failed!"
+    ["not_installed_update_en"]="TeslaMiner is not installed. Please install it first."
+    
+    # Reboot related
+    ["rebooting_en"]="Rebooting server now..."
+    ["confirm_reboot_en"]="Are you sure you want to reboot the server? (y/n) "
+    ["reboot_canceled_en"]="Reboot canceled."
 )
 
-# 中文文本
+# Chinese texts
 TEXTS+=(
-    # 公共文本
+    # Common texts
     ["error_root_zh"]="错误: 此脚本必须以root用户身份运行!"
     ["menu_title_zh"]="TeslaMiner 服务管理脚本"
     ["press_any_key_zh"]="按任意键继续..."
     ["invalid_option_zh"]="无效选项，请重新输入!"
     ["exit_zh"]="退出脚本."
+    ["input_option_zh"]="请输入您的选择"
     
-    # 菜单选项
+    # Menu options
     ["menu_install_zh"]="安装 TeslaMiner 服务"
     ["menu_start_zh"]="启动 TeslaMiner 服务"
     ["menu_stop_zh"]="停止 TeslaMiner 服务"
     ["menu_restart_zh"]="重启 TeslaMiner 服务"
     ["menu_status_zh"]="查看服务状态"
     ["menu_uninstall_zh"]="卸载 TeslaMiner 服务"
+    ["menu_update_zh"]="更新 TeslaMiner"
+    ["menu_reboot_zh"]="重启服务器"
     ["menu_exit_zh"]="退出"
     
-    # 安装相关
+    # Installation related
     ["socket_limit_zh"]="正在设置系统socket连接上限..."
     ["socket_set_zh"]="系统socket连接上限已设置为1048576"
     ["socket_ok_zh"]="系统socket连接上限已经足够高 (当前: %s)"
@@ -111,27 +128,31 @@ TEXTS+=(
     ["already_installed_zh"]="错误: TeslaMiner服务已经安装!"
     ["uninstall_first_zh"]="请先卸载或使用重启/停止功能"
     
-    # 卸载相关
+    # Uninstallation related
     ["uninstalling_zh"]="正在卸载TeslaMiner服务..."
     ["uninstalled_zh"]="TeslaMiner服务已卸载!"
     ["not_installed_zh"]="错误: TeslaMiner服务未安装，无需卸载!"
     
-    # 服务控制
+    # Service control
     ["starting_zh"]="服务已启动!"
     ["already_running_zh"]="服务已经在运行中!"
     ["stopping_zh"]="服务已停止!"
     ["already_stopped_zh"]="服务已经停止!"
     ["restarting_zh"]="服务已重启!"
+    
+    # Update related
+    ["updating_zh"]="正在更新TeslaMiner..."
+    ["update_done_zh"]="TeslaMiner更新成功!"
+    ["update_fail_zh"]="更新失败!"
+    ["not_installed_update_zh"]="TeslaMiner未安装。请先安装。"
+    
+    # Reboot related
+    ["rebooting_zh"]="正在重启服务器..."
+    ["confirm_reboot_zh"]="确定要重启服务器吗? (y/n) "
+    ["reboot_canceled_zh"]="已取消重启。"
 )
 
-# 如果需要添加第三种语言(如西班牙语)，可以这样添加:
-# TEXTS+=(
-#    ["error_root_es"]="Error: ¡Este script debe ejecutarse como root!"
-#    ["menu_title_es"]="Script de gestión de servicio TeslaMiner"
-#    ...
-# )
-
-# 获取本地化文本
+# Get localized text
 text() {
     local key=$1
     local lang_key="${key}_${LANG}"
@@ -144,7 +165,7 @@ text() {
     fi
 }
 
-# 变量定义
+# Variable definitions
 SERVICE_NAME="teslaminer"
 INSTALL_DIR="/opt/teslaminer"
 BIN_NAME="teslaminerkernel"
@@ -152,7 +173,7 @@ SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
 DOWNLOAD_URL="https://github.com/hivecassiny/tesla/releases/download/${VERSION}/teslaminerkernellinuxamd64.tar.gz"
 TEMP_DIR="/tmp/teslaminer_install"
 
-# 检查是否root用户
+# Check if running as root
 check_root() {
     if [ "$(id -u)" != "0" ]; then
         echo -e "${RED}$(text error_root)${NC}"
@@ -160,7 +181,7 @@ check_root() {
     fi
 }
 
-# 检查服务是否已安装
+# Check if service is installed
 is_installed() {
     if [ -f "$SERVICE_FILE" ] || [ -d "$INSTALL_DIR" ]; then
         return 0
@@ -169,7 +190,7 @@ is_installed() {
     fi
 }
 
-# 检查服务是否已卸载
+# Check if service is uninstalled
 is_uninstalled() {
     if [ ! -f "$SERVICE_FILE" ] && [ ! -d "$INSTALL_DIR" ]; then
         return 0
@@ -178,7 +199,7 @@ is_uninstalled() {
     fi
 }
 
-# 检查服务是否正在运行
+# Check if service is running
 is_running() {
     if systemctl is-active --quiet "$SERVICE_NAME"; then
         return 0
@@ -187,7 +208,7 @@ is_running() {
     fi
 }
 
-# 设置socket连接上限
+# Set socket connection limit
 set_socket_limit() {
     echo -e "${YELLOW}$(text socket_limit)${NC}"
     local current_limit=$(ulimit -n)
@@ -205,7 +226,7 @@ set_socket_limit() {
     fi
 }
 
-# 下载并解压TeslaMiner
+# Download and extract TeslaMiner
 download_and_extract() {
     echo -e "${YELLOW}$(text downloading)${NC}"
     mkdir -p "$TEMP_DIR"
@@ -218,7 +239,7 @@ download_and_extract() {
     echo -e "${YELLOW}$(text extracting)${NC}"
     tar -xzf "$TEMP_DIR/teslaminer.tar.gz" -C "$TEMP_DIR"
     
-    # 直接查找二进制文件
+    # Find binary file directly
     BIN_PATH=$(find "$TEMP_DIR" -name "$BIN_NAME" -type f)
     if [ -z "$BIN_PATH" ]; then
         echo -e "${RED}$(text error_bin "$BIN_NAME")${NC}"
@@ -228,7 +249,7 @@ download_and_extract() {
     chmod +x "$BIN_PATH"
 }
 
-# 安装服务
+# Install service
 install_service() {
     if is_installed; then
         echo -e "${RED}$(text already_installed)${NC}"
@@ -238,13 +259,13 @@ install_service() {
     
     echo -e "${YELLOW}$(text installing)${NC}"
     
-    # 创建安装目录
+    # Create installation directory
     mkdir -p "$INSTALL_DIR"
     
-    # 移动文件到安装目录
+    # Move files to installation directory
     cp "$BIN_PATH" "$INSTALL_DIR/"
     
-    # 创建服务文件
+    # Create service file
     cat > "$SERVICE_FILE" <<EOF
 [Unit]
 Description=TeslaMiner Service
@@ -263,17 +284,22 @@ LimitNOFILE=1048576
 WantedBy=multi-user.target
 EOF
     
-    # 重载systemd
+    # Reload systemd
     systemctl daemon-reload
     systemctl enable "$SERVICE_NAME"
     systemctl start "$SERVICE_NAME"
     
     echo -e "${GREEN}$(text install_done)${NC}"
     echo -e "$(text install_dir) ${BLUE}$INSTALL_DIR${NC}"
-    echo -e "$(text service_status) ${BLUE}systemctl status $SERVICE_NAME${NC}"
+    
+    # Show service status after installation
+    status_service
+    
+    # Clean up
+    rm -rf "$TEMP_DIR"
 }
 
-# 卸载服务
+# Uninstall service
 uninstall_service() {
     if is_uninstalled; then
         echo -e "${RED}$(text not_installed)${NC}"
@@ -302,7 +328,7 @@ uninstall_service() {
     echo -e "${GREEN}$(text uninstalled)${NC}"
 }
 
-# 启动服务
+# Start service
 start_service() {
     if is_running; then
         echo -e "${YELLOW}$(text already_running)${NC}"
@@ -311,9 +337,12 @@ start_service() {
     
     systemctl start "$SERVICE_NAME"
     echo -e "${GREEN}$(text starting)${NC}"
+    
+    # Show service status after starting
+    status_service
 }
 
-# 停止服务
+# Stop service
 stop_service() {
     if ! is_running; then
         echo -e "${YELLOW}$(text already_stopped)${NC}"
@@ -324,19 +353,77 @@ stop_service() {
     echo -e "${GREEN}$(text stopping)${NC}"
 }
 
-# 重启服务
+# Restart service
 restart_service() {
     systemctl restart "$SERVICE_NAME"
     echo -e "${GREEN}$(text restarting)${NC}"
-    echo -e "$(text service_status) ${BLUE}systemctl status $SERVICE_NAME${NC}"
+    
+    # Show service status after restarting
+    status_service
 }
 
-# 查看服务状态
+# View service status
 status_service() {
-    systemctl status "$SERVICE_NAME"
+    echo -e "\n${YELLOW}$(text service_status)${NC}"
+    systemctl status "$SERVICE_NAME" --no-pager -l
 }
 
-# 显示菜单
+# Update TeslaMiner
+update_service() {
+    if ! is_installed; then
+        echo -e "${RED}$(text not_installed_update)${NC}"
+        return 1
+    fi
+    
+    echo -e "${YELLOW}$(text updating)${NC}"
+    
+    # Stop service if running
+    if is_running; then
+        systemctl stop "$SERVICE_NAME"
+    fi
+    
+    # Download and extract new version
+    download_and_extract
+    
+    # Backup old binary
+    mv "$INSTALL_DIR/$BIN_NAME" "$INSTALL_DIR/${BIN_NAME}.bak"
+    
+    # Copy new binary
+    cp "$BIN_PATH" "$INSTALL_DIR/"
+    
+    # Start service
+    systemctl start "$SERVICE_NAME"
+    
+    # Verify update
+    if is_running; then
+        echo -e "${GREEN}$(text update_done)${NC}"
+        status_service
+        # Remove backup if update successful
+        rm -f "$INSTALL_DIR/${BIN_NAME}.bak"
+    else
+        echo -e "${RED}$(text update_fail)${NC}"
+        # Restore backup if update failed
+        mv "$INSTALL_DIR/${BIN_NAME}.bak" "$INSTALL_DIR/$BIN_NAME"
+        systemctl start "$SERVICE_NAME"
+    fi
+    
+    # Clean up
+    rm -rf "$TEMP_DIR"
+}
+
+# Reboot server
+reboot_server() {
+    read -p "$(text confirm_reboot)" -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        echo -e "${YELLOW}$(text rebooting)${NC}"
+        shutdown -r now
+    else
+        echo -e "${YELLOW}$(text reboot_canceled)${NC}"
+    fi
+}
+
+# Show menu
 show_menu() {
     clear
     echo -e "${GREEN}================================${NC}"
@@ -349,50 +436,59 @@ show_menu() {
     echo -e "4. $(text menu_restart)"
     echo -e "5. $(text menu_status)"
     echo -e "6. $(text menu_uninstall)"
+    echo -e "7. $(text menu_update)"
+    echo -e "8. $(text menu_reboot)"
     echo -e "0. $(text menu_exit)"
     echo -e "${GREEN}================================${NC}"
-    read -p "$(text input_option) [0-6]: " option
+    read -p "$(text input_option) [0-8]: " option
 }
 
-# 主函数
+# Main function
 main() {
     check_root
     
     while true; do
         show_menu
         case $option in
-            1)
+            1)  # Install
                 set_socket_limit
                 download_and_extract
                 install_service
-                rm -rf "$TEMP_DIR"
                 read -p "$(text press_any_key)"
                 ;;
-            2)
+            2)  # Start
                 start_service
                 read -p "$(text press_any_key)"
                 ;;
-            3)
+            3)  # Stop
                 stop_service
                 read -p "$(text press_any_key)"
                 ;;
-            4)
+            4)  # Restart
                 restart_service
                 read -p "$(text press_any_key)"
                 ;;
-            5)
+            5)  # Status
                 status_service
                 read -p "$(text press_any_key)"
                 ;;
-            6)
+            6)  # Uninstall
                 uninstall_service
                 read -p "$(text press_any_key)"
                 ;;
-            0)
+            7)  # Update
+                update_service
+                read -p "$(text press_any_key)"
+                ;;
+            8)  # Reboot
+                reboot_server
+                read -p "$(text press_any_key)"
+                ;;
+            0)  # Exit
                 echo -e "${GREEN}$(text exit)${NC}"
                 exit 0
                 ;;
-            *)
+            *)  # Invalid option
                 echo -e "${RED}$(text invalid_option)${NC}"
                 read -p "$(text press_any_key)"
                 ;;
@@ -400,5 +496,5 @@ main() {
     done
 }
 
-# 执行主函数
+# Execute main function
 main
