@@ -6,7 +6,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
-ScriptVersion='v1.1.0'
+ScriptVersion='v1.2.0'
 
 # Default language set to English
 LANG="en"
@@ -250,6 +250,7 @@ download_and_extract() {
 }
 
 # Install service
+# Install service
 install_service() {
     if is_installed; then
         echo -e "${RED}$(text already_installed)${NC}"
@@ -287,13 +288,28 @@ EOF
     # Reload systemd
     systemctl daemon-reload
     systemctl enable "$SERVICE_NAME"
-    systemctl start "$SERVICE_NAME"
     
-    echo -e "${GREEN}$(text install_done)${NC}"
-    echo -e "$(text install_dir) ${BLUE}$INSTALL_DIR${NC}"
-    
-    # Show service status after installation
-    status_service
+    # Start the service and verify it's running
+    if systemctl start "$SERVICE_NAME"; then
+        echo -e "${GREEN}$(text install_done)${NC}"
+        echo -e "$(text install_dir) ${BLUE}$INSTALL_DIR${NC}"
+        
+        # Check if service is actually running
+        sleep 2 # Give it a moment to start
+        if is_running; then
+            echo -e "${GREEN}Service is successfully running${NC}"
+        else
+            echo -e "${YELLOW}Service was started but is not currently running${NC}"
+            echo -e "${YELLOW}Checking status for more information...${NC}"
+        fi
+        
+        # Show service status after installation
+        status_service
+    else
+        echo -e "${RED}Failed to start TeslaMiner service${NC}"
+        status_service
+        return 1
+    fi
     
     # Clean up
     rm -rf "$TEMP_DIR"
