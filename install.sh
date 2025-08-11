@@ -63,6 +63,7 @@ TEXTS+=(
     ["menu_update_en"]="Update TeslaMiner"
     ["menu_reboot_en"]="Reboot server"
     ["menu_exit_en"]="Exit"
+    ["menu_reinstall_en"]="Reinstall TeslaMiner service"
     
     # Installation related
     ["socket_limit_en"]="Setting system socket connection limit..."
@@ -106,6 +107,10 @@ TEXTS+=(
     # Config related
     ["creating_config_en"]="Creating config.rig file..."
     ["config_created_en"]="config.rig file created successfully!"
+    
+    # Reinstall related
+    ["reinstalling_en"]="Reinstalling TeslaMiner service..."
+    ["reinstall_done_en"]="TeslaMiner service reinstalled successfully!"
 )
 
 # Chinese texts
@@ -128,6 +133,7 @@ TEXTS+=(
     ["menu_update_zh"]="更新 TeslaMiner"
     ["menu_reboot_zh"]="重启服务器"
     ["menu_exit_zh"]="退出"
+    ["menu_reinstall_zh"]="重新安装 TeslaMiner 服务"
     
     # Installation related
     ["socket_limit_zh"]="正在设置系统socket连接上限..."
@@ -171,6 +177,10 @@ TEXTS+=(
     # Config related
     ["creating_config_zh"]="正在创建config.rig文件..."
     ["config_created_zh"]="config.rig文件创建成功!"
+    
+    # Reinstall related
+    ["reinstalling_zh"]="正在重新安装TeslaMiner服务..."
+    ["reinstall_done_zh"]="TeslaMiner服务重新安装成功!"
 )
 
 # Get localized text
@@ -467,6 +477,23 @@ update_service() {
     rm -rf "$TEMP_DIR"
 }
 
+# Reinstall service
+reinstall_service() {
+    echo -e "${YELLOW}$(text reinstalling)${NC}"
+    
+    # First uninstall if installed
+    if is_installed; then
+        uninstall_service
+    fi
+    
+    # Then install fresh
+    set_socket_limit
+    download_and_extract
+    install_service
+    
+    echo -e "${GREEN}$(text reinstall_done)${NC}"
+}
+
 # Reboot server
 reboot_server() {
     read -p "$(text confirm_reboot)" -n 1 -r
@@ -494,9 +521,10 @@ show_menu() {
     echo -e "6. $(text menu_uninstall)"
     echo -e "7. $(text menu_update)"
     echo -e "8. $(text menu_reboot)"
+    echo -e "9. $(text menu_reinstall)"
     echo -e "0. $(text menu_exit)"
     echo -e "${GREEN}================================${NC}"
-    read -p "$(text input_option) [0-8]: " option
+    read -p "$(text input_option) [0-9]: " option
 }
 
 # Main function
@@ -538,6 +566,10 @@ main() {
                 ;;
             8)  # Reboot
                 reboot_server
+                read -p "$(text press_any_key)"
+                ;;
+            9)  # Reinstall
+                reinstall_service
                 read -p "$(text press_any_key)"
                 ;;
             0)  # Exit
