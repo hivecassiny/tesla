@@ -6,7 +6,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
-ScriptVersion='v1.3.0'
+ScriptVersion='v1.3.1'
 
 # Default language set to English
 LANG="en"
@@ -340,7 +340,7 @@ EOF
         echo -e "$(text install_dir) ${BLUE}$INSTALL_DIR${NC}"
         
         # Check if service is actually running
-        sleep 2 # Give it a moment to start
+        sleep 5 # Give it a moment to start
         if is_running; then
             echo -e "${GREEN}Service is successfully running${NC}"
         else
