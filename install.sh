@@ -6,13 +6,14 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
-ScriptVersion='v1.3.1'
+ScriptVersion='v1.3.2'
 
 # Default language set to English
 LANG="en"
 VERSION=""
 HIVE_MINER_HOST=""
 UUID=""
+DIRECT_ACTION=""  # 新增：用于存储直接执行的步骤
 
 # Parse arguments
 for arg in "$@"; do
@@ -24,6 +25,8 @@ for arg in "$@"; do
         HIVE_MINER_HOST="${arg#*=}"
     elif [[ "$arg" == uuid=* ]]; then
         UUID="${arg#*=}"
+    elif [[ "$arg" =~ ^[0-9]+$ ]]; then  # 新增：检测数字参数
+        DIRECT_ACTION="$arg"
     fi
 done
 
@@ -506,6 +509,47 @@ reboot_server() {
     fi
 }
 
+# Execute direct action
+execute_direct_action() {
+    case $1 in
+        1)  # Install
+            set_socket_limit
+            download_and_extract
+            install_service
+            ;;
+        2)  # Start
+            start_service
+            ;;
+        3)  # Stop
+            stop_service
+            ;;
+        4)  # Restart
+            restart_service
+            ;;
+        5)  # Status
+            status_service
+            ;;
+        6)  # Uninstall
+            uninstall_service
+            ;;
+        7)  # Update
+            update_service
+            ;;
+        8)  # Reboot
+            reboot_server
+            ;;
+        9)  # Reinstall
+            reinstall_service
+            ;;
+        *)
+            echo -e "${RED}Invalid action number. Please use 1-9.${NC}"
+            exit 1
+            ;;
+    esac
+    
+    exit 0
+}
+
 # Show menu
 show_menu() {
     clear
@@ -531,6 +575,12 @@ show_menu() {
 main() {
     check_root
     
+    # 如果有直接执行参数，则执行对应操作后退出
+    if [ -n "$DIRECT_ACTION" ]; then
+        execute_direct_action "$DIRECT_ACTION"
+    fi
+    
+    # 否则进入交互式菜单
     while true; do
         show_menu
         case $option in
