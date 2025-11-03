@@ -1,0 +1,130 @@
+{
+  "property": [
+    {
+      "os_type": "linux",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel",
+      "version": "v0.1.018@250903",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.018@250903/teslaminerkernellinuxamd64.tar.gz"
+    },
+    {
+      "os_type": "windows",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel.exe",
+      "version": "v0.1.018@250903",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.018@250903/teslaminerkernelwindowsamd64.zip"
+    },
+    {
+      "os_type": "linux",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel",
+      "version": "v0.1.019@250904",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.019@250904/teslaminerkernellinuxamd64.tar.gz"
+    },
+    {
+      "os_type": "windows",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel.exe",
+      "version": "v0.1.019@250904",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.019@250904/teslaminerkernelwindowsamd64.zip"
+    },
+    {
+      "os_type": "linux",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel",
+      "version": "v0.1.020@250905",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.020@250905/teslaminerkernellinuxamd64.tar.gz"
+    },
+    {
+      "os_type": "windows",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel.exe",
+      "version": "v0.1.020@250905",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.020@250905/teslaminerkernelwindowsamd64.zip"
+    },
+    {
+      "os_type": "linux",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel",
+      "version": "v0.1.021@250913",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.021@250913/teslaminerkernellinuxamd64.tar.gz"
+    },
+    {
+      "os_type": "windows",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel.exe",
+      "version": "v0.1.021@250913",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.021@250913/teslaminerkernelwindowsamd64.zip"
+    },
+    {
+      "os_type": "linux",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel",
+      "version": "v0.1.022@250926",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.022@250926/teslaminerkernellinuxamd64.tar.gz"
+    },
+    {
+      "os_type": "windows",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel.exe",
+      "version": "v0.1.022@250926",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.022@250926/teslaminerkernelwindowsamd64.zip"
+    },
+    {
+      "os_type": "linux",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel",
+      "version": "v0.1.022@250927",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.022@250927/teslaminerkernellinuxamd64.tar.gz"
+    },
+    {
+      "os_type": "windows",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel.exe",
+      "version": "v0.1.022@250927",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.022@250927/teslaminerkernelwindowsamd64.zip"
+    },
+    {
+      "os_type": "linux",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel",
+      "version": "v0.1.023@250927",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.023@250927/teslaminerkernellinuxamd64.tar.gz"
+    },
+    {
+      "os_type": "windows",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel.exe",
+      "version": "v0.1.023@250927",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.023@250927/teslaminerkernelwindowsamd64.zip"
+    },
+    {
+      "os_type": "linux",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel",
+      "version": "v0.1.026@251007",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.026@251007/teslaminerkernellinuxamd64.tar.gz"
+    },
+    {
+      "os_type": "windows",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel.exe",
+      "version": "v0.1.026@251007",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.026@251007/teslaminerkernelwindowsamd64.zip"
+    },
+    {
+      "os_type": "linux",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel",
+      "version": "v0.1.028@251104",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.028@251104/teslaminerkernellinuxamd64.tar.gz"
+    },
+    {
+      "os_type": "windows",
+      "os_arch": "amd64",
+      "name": "teslaminerkernel.exe",
+      "version": "v0.1.028@251104",
+      "download_url": "https://github.com/hivecassiny/tesla/releases/download/v0.1.028@251104/teslaminerkernelwindowsamd64.zip"
+    }
+  ]
+}
