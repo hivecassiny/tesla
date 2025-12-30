@@ -6,7 +6,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
-ScriptVersion='v1.3.2'
+ScriptVersion='v1.3.3'
 
 # Default language set to English
 LANG="en"
@@ -440,14 +440,14 @@ update_service() {
     fi
     
     echo -e "${YELLOW}$(text updating)${NC}"
+
+     # Download and extract new version
+    download_and_extract
     
     # Stop service if running
     if is_running; then
         systemctl stop "$SERVICE_NAME"
     fi
-    
-    # Download and extract new version
-    download_and_extract
     
     # Backup old binary
     mv "$INSTALL_DIR/$BIN_NAME" "$INSTALL_DIR/${BIN_NAME}.bak"
