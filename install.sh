@@ -6,7 +6,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
-ScriptVersion='v1.3.5'
+ScriptVersion='v1.3.6'
 
 # Default language set to English
 LANG="en"
@@ -209,7 +209,7 @@ BIN_NAME="teslaminerkernel"
 SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
 DOWNLOAD_URL="https://github.com/hivecassiny/tesla/releases/download/${VERSION}/teslaminerkernellinuxamd64.tar.gz"
 TEMP_DIR="/tmp/teslaminer_install"
-CONFIG_FILE="${INSTALL_DIR}/config.rig"
+CONFIG_FILE="${INSTALL_DIR}/hivempos.kernel.conf"
 
 # Create config file
 create_config() {
